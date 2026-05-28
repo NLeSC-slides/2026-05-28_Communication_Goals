@@ -19,6 +19,7 @@
     <script src="http://localhost:35729/livereload.js"></script>
   </head>
   <body>
+
     <div class="reveal">
       <div class="slides">
 
@@ -30,29 +31,308 @@
           data-background-video-muted="true"
           data-markdown>
             <textarea data-template>
-              # My Title
-              ## Subtitle
+              # Not Everything Needs a Pull Request
+              ## Whose Problem Is It, Anyway? <!-- .element: class="fragment" -->
 
-              [Author Name](mailto:a.name@esciencecenter.nl)
+              [Ole Mussmann](mailto:o.mussmann@esciencecenter.nl)
             </textarea>
           </section>
 
-          <section> <!-- start of nested slides/column -->
-            <section data-state="standard">
-              <h2>html slides</h2>
-              <p>content</p>
-              <p>with html</p>
+          <section>
+            <section data-state="standard" data-background-image="./files/milaoktasafitri-arrow-9680464.jpg">
+              <!-- https://pixabay.com/illustrations/arrow-man-arch-forest-archery-9680464/ -->
+              <h2>Communication Goals</h2>
+
+              A colleague approaches you with a problem.
+
+              <blockquote>My project partners keeps changing the requirements, it's so frustrating.</blockquote>
+
+              <div style="display: flex;">
+              <span style="flex: 1; margin: auto;">They want:</span>
+
+              <ul style="flex: 1;" class="fragment">
+                <li>... a solution?</li>
+                <li>... emotional support?</li>
+                <li>... be heard?</li>
+                <li>...?</li>
+              </ul>
+              </div>
+
+              <aside class="notes">
+                <ul>
+                  <li>Think of the last time someone came to you with a problem. Which mode did you go into?</li>
+                  <li>Did you ask what they needed, or did you assume?</li>
+                  <li>Did you ever have a mismatch, as a sender or receiver?</li>
+                </ul>
+              </aside>
             </section>
 
-            <section data-state="standard" data-markdown>
-              <textarea data-template>
-                # Header
+            <section data-state="standard" data-background-image="./files/milaoktasafitri-arrow-9680464.jpg">
+              <h2>Setting the Scene</h2>
 
-                - list item
-                - another one
-              </textarea>
+              <p>Both sides of the conversation share responsibility for making the goal explicit.</p>
+              <div style="display: flex;">
+
+                <div style="flex: 1;">
+                  <h3>Recipient</h3>
+                  <ul>
+                    <li><em>"Do you want help thinking this through, or are you looking for a concrete fix?"</em></li>
+                    <li><em>"Do you need to vent first, or shall we go straight to options?"</em></li>
+                  </ul>
+                </div>
+
+                <div class="fragment" style="flex: 1;">
+                  <h3>Sender</h3>
+                  <ul>
+                    <li><em>"I'm not looking for a solution yet, I just need to talk this out."</em></li>
+                    <li class="fragment">It's okay to change your mind mid-conversation.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <aside class="notes">
+                <ul>
+                  <li>Has anyone tried asking this question explicitly? How did it land?</li>
+                  <li>What makes it feel awkward — and how do we get past that?</li>
+                </ul>
+              </aside>
             </section>
-          </section> <!-- end of nested slides/column -->
+
+            <section data-state="standard" data-background-image="./files/milaoktasafitri-arrow-9680464.jpg">
+              <h2>Exercises</h2>
+              <ul>
+                <li>Ask intention (next week)</li>
+                <li class="fragment">Listening 2m</li>
+              </ul>
+              <div class="fragment" style="padding: 1.5rem 0; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+
+                <div style="position: relative; width: 160px; height: 160px;">
+                  <svg viewBox="0 0 160 160" width="160" height="160" aria-hidden="true">
+                    <circle cx="80" cy="80" r="68" fill="none" stroke="gray" opacity=".2" stroke-width="6"/>
+                    <circle id="progress-ring" cx="80" cy="80" r="68" fill="none"
+                      stroke="gray" stroke-width="6"
+                      stroke-linecap="round"
+                      stroke-dasharray="427.26"
+                      stroke-dashoffset="0"
+                      transform="rotate(-90 80 80)"
+                      style="transition: stroke-dashoffset 1s linear, stroke 0.3s;"/>
+                  </svg>
+                  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
+                    <span id="timer-display" style="font-size: 36px; font-weight: 500; color: black; font-variant-numeric: tabular-nums; letter-spacing: -1px;">2:00</span>
+                    <span id="timer-label" style="font-size: 12px; color: black;">ready</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                  <button id="btn-primary" onclick="timerPrimary()" style="display: flex; align-items: center; gap: 6px; padding: 8px 20px; font-size: 14px;">
+                    <i id="icon-primary" class="ti ti-player-play" style="font-size: 16px;" aria-hidden="true"></i>
+                    <span id="label-primary">Start</span>
+                  </button>
+                  <button id="btn-stop" onclick="timerStop()" disabled style="display: flex; align-items: center; gap: 6px; padding: 8px 20px; font-size: 14px; opacity: 0.4; cursor: not-allowed;">
+                    <i class="ti ti-square" style="font-size: 16px;" aria-hidden="true"></i> Stop
+                  </button>
+                </div>
+
+              </div>
+
+              <script>
+              const TOTAL = 120;
+              let remaining = TOTAL;
+              let interval = null;
+              let running = false;
+
+              const display  = document.getElementById('timer-display');
+              const label    = document.getElementById('timer-label');
+              const ring     = document.getElementById('progress-ring');
+              const CIRC     = 427.26;
+
+              const btnPrimary   = document.getElementById('btn-primary');
+              const iconPrimary  = document.getElementById('icon-primary');
+              const labelPrimary = document.getElementById('label-primary');
+              const btnStop      = document.getElementById('btn-stop');
+
+              function fmt(s) {
+                return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+              }
+
+              function setRing(s) {
+                ring.style.strokeDashoffset = CIRC * (1 - s / TOTAL);
+                ring.style.stroke = s <= 15 ? 'red'
+                                  : s <= 30 ? 'var(--nlesc-yellow)'
+                                  : 'var(--nlesc-blue)';
+              }
+
+              function setStop(enabled) {
+                btnStop.disabled = !enabled;
+                btnStop.style.opacity = enabled ? '1' : '0.4';
+                btnStop.style.cursor  = enabled ? '' : 'not-allowed';
+              }
+
+              function setPrimary(icon, text) {
+                iconPrimary.className = 'ti ' + icon;
+                labelPrimary.textContent = text;
+                btnPrimary.setAttribute('aria-label', text);
+              }
+
+              function timerPrimary() {
+                if (!running && remaining === TOTAL) {
+                  start();
+                } else if (running) {
+                  pause();
+                } else {
+                  resume();
+                }
+              }
+
+              function start() {
+                running = true;
+                label.textContent = 'running';
+                setPrimary('ti-player-pause', 'Pause');
+                setStop(true);
+                tick();
+              }
+
+              function pause() {
+                clearInterval(interval);
+                running = false;
+                label.textContent = 'paused';
+                setPrimary('ti-player-play', 'Resume');
+              }
+
+              function resume() {
+                running = true;
+                label.textContent = 'running';
+                setPrimary('ti-player-pause', 'Pause');
+                tick();
+              }
+
+              function tick() {
+                interval = setInterval(() => {
+                  remaining--;
+                  display.textContent = fmt(remaining);
+                  setRing(remaining);
+                  if (remaining <= 0) {
+                    clearInterval(interval);
+                    running = false;
+                    label.textContent = "time's up";
+                    display.textContent = '0:00';
+                    btnPrimary.disabled = true;
+                    btnPrimary.style.opacity = '0.4';
+                    btnPrimary.style.cursor = 'not-allowed';
+                    setStop(true);
+                  }
+                }, 1000);
+              }
+
+              function timerStop() {
+                clearInterval(interval);
+                running = false;
+                remaining = TOTAL;
+                display.textContent = fmt(TOTAL);
+                label.textContent = 'ready';
+                setRing(TOTAL);
+                setPrimary('ti-player-play', 'Start');
+                btnPrimary.disabled = false;
+                btnPrimary.style.opacity = '1';
+                btnPrimary.style.cursor = '';
+                setStop(false);
+              }
+
+              setRing(TOTAL);
+              </script>
+
+            </section>
+          </section>
+
+          <section>
+            <section data-state="purple_overlay logo yellow_flag" data-background-image="./files/gregorybutler-battleship-389274_1920.jpg">
+              <!-- https://pixabay.com/photos/battleship-engine-room-historic-war-389274/ -->
+              <h2>Engineering Solutions</h2>
+            </section>
+
+            <section data-state="purple_overlay logo yellow_flag" data-background-image="./files/gregorybutler-battleship-389274_1920.jpg">
+              <h2>... Solutions?</h2>
+
+              Not all problems need (direct) solutions.
+
+              <br>
+              <br>
+
+              <ul>
+                <li class="fragment">
+                  🔧 <b>Fix it</b> The problem is yours. Act.
+                </li>
+                <li class="fragment">
+                  <b>⚙️ Improve the process</b> The same problem will recur. Address the root cause, not the symptom.
+                </li>
+                <li class="fragment">
+                  <b>🤝 Delegate it</b> Someone else is better placed — or this is their responsibility.
+                </li>
+                <li class="fragment">
+                  <b>🚫 Leave it alone</b> It's not your problem to solve. Empathy ≠ adoption.
+                </li>
+                <li class="fragment">
+                  <b>...❓</b>
+                </li>
+              </ul>
+            </section>
+
+            <section data-state="purple_overlay logo yellow_flag" data-background-image="./files/gregorybutler-battleship-389274_1920.jpg">
+              <h2>Exercises</h2>
+              <ul>
+                <li>Categorize problem (next week)</li>
+              </ul>
+            </section>
+          </section>
+
+<section data-state="black_overlay yellow_flag logo" data-background-image="./files/jarmoluk-hands-2847508.jpg">
+  <!-- https://pixabay.com/photos/hands-friendship-friends-children-2847508/ -->
+  <h2>Being "Helpful"</h2>
+
+  <p>For technically-minded people, <em>helpfulness</em> is often silently defined as <em>problem-solving</em>. <span class="fragment" data-fragment-index="1">It's a broad spectrum:</span></p>
+
+  <div class="fragment" data-fragment-index="1">
+    <ul>
+      <li>Listening actively without fixing</li>
+      <li>Naming what kind of help you can offer</li>
+      <li>Asking what kind of help is wanted</li>
+      <li>Redirecting or delegating gracefully</li>
+      <li>Knowing when the most helpful thing is to step back</li>
+    </ul>
+  </div>
+
+  <aside class="notes">
+    <ul>
+      <li>Which of these feels most unnatural to you — and what might make it easier?</li>
+      <li>What would change in your team if this became a shared habit?</li>
+    </ul>
+  </aside>
+</section>
+
+<section data-state="standard">
+  <h2>Summary</h2>
+
+  <div style="display: flex; font-size: smaller;">
+    <div style="flex: 1; padding: 20px;">
+      <h3>Comm. Goals</h3>
+      <p>When in doubt, ask: <em>"What kind of support are you looking for?"</em>, or offer the same information.</p>
+    </div>
+    <div style="flex: 1; padding: 20px;" class="fragment">
+      <h3>Categorize</h3>
+      <p>Before engaging with any problem, categorize:
+      <ul>
+        <li>fix?</li>
+        <li>improve process?</li>
+        <li>delegate?</li>
+        <li>leave it?</li>
+      </ul></p>
+    </div>
+    <div style="flex: 1; padding: 20px;" class="fragment">
+      <h3>Helping</h3>
+      <p>There's more ways to help than fixing. Presence, listening, and stepping back are equally valid — and often more valuable.</p>
+    </div>
+  </div>
+</section>
 
         <!-- END YOUR SLIDES -->
       </div>
@@ -71,7 +351,7 @@
     -->
     <script type="module">
       import Escience from "./dist/plugin/escience_theme/escience_6.0.0.esm.js"
-      import RevealSubtitles from "./dist/plugin/RevealSubtitles/plugin/subtitles/plugin.js"
+      // import RevealSubtitles from "./dist/plugin/RevealSubtitles/plugin/subtitles/plugin.js"
 
       // More info about initialization & config:
       // - https://revealjs.com/initialization/
@@ -87,7 +367,7 @@
         scrollProgress: true,
 
         // Learn about plugins: https://revealjs.com/plugins/
-        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealSubtitles, Escience ]
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, Escience ]
       });
     </script>
   </body>
